@@ -31,8 +31,17 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Override
     public void addResourceHandlers(final ResourceHandlerRegistry registry) {
-        String location = environment.getProperty("app.file.upload.mapping");
-        registry.addResourceHandler("/upload/**").addResourceLocations(location);
+        registry.addResourceHandler("/upload/**")
+                .addResourceLocations(environment.getProperty("app.file.upload.mapping"));
+
+        registry.addResourceHandler("doc/**")
+                .addResourceLocations("classpath:/META-INF/resources/");
+
+        registry.addResourceHandler("swagger-ui.html**")
+                .addResourceLocations("classpath:/META-INF/resources/");
+
+        registry.addResourceHandler("/webjars/**")
+                .addResourceLocations("classpath:/META-INF/resources/webjars/");
     }
 
 }

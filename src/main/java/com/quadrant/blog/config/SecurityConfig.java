@@ -44,28 +44,42 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return super.authenticationManagerBean();
     }
 
+    private static final String[] AUTH_WHITELIST = {
+            "/authenticate",
+            "/swagger-resources/**",
+            "/swagger-ui/**",
+            "/v3/api-docs",
+            "/webjars/**",
+
+            "/api/v1/auth/*",
+            "/upload/**",
+            "/api/v1/common/**"
+    };
+
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
         httpSecurity.cors()
-            .and()
+                .and()
                 .csrf()
                 .disable()
-                .authorizeRequests()
-                .antMatchers("/api/v1/auth/*", "/upload/**", "/api/v1/common/**", "/swagger-ui/**")
-                .permitAll()
-                .anyRequest()
-                .authenticated()
-            .and()
-                .exceptionHandling()
-                .authenticationEntryPoint((request, response, authException) -> {
-            Map<String, Object> responseMap = new HashMap<>();
-            ObjectMapper mapper = new ObjectMapper();
-            response.setStatus(401);
-            responseMap.put("error", true);
-            responseMap.put("message", "Unauthorized");
-            response.setHeader("content-type", "application/json");
-            String responseMsg = mapper.writeValueAsString(responseMap);
-            response.getWriter().write(responseMsg);
-        }).and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
+                .headers()
+                .frameOptions()
+                .deny()
+                .and()
+                .authorizeRequests().antMatchers(AUTH_WHITELIST).permitAll()
+                .anyRequest().authenticated()
+                .and()
+                .exceptionHandling().authenticationEntryPoint((request, response, authException) -> {
+                    Map<String, Object> responseMap = new HashMap<>();
+                    ObjectMapper mapper = new ObjectMapper();
+                    response.setStatus(401);
+                    responseMap.put("error", true);
+                    responseMap.put("message", "Unauthorized");
+                    response.setHeader("content-type", "application/json");
+                    String responseMsg = mapper.writeValueAsString(responseMap);
+                    response.getWriter().write(responseMsg);
+                })
+                .and()
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
     }
 }

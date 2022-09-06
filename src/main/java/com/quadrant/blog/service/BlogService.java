@@ -159,7 +159,7 @@ public class BlogService {
         Optional<BlogEntity> findByIdBlog = blogRepository.findById(id);
 
         if (findByIdBlog.isPresent()) {
-            MultipartFile mf = request.getFile();
+            MultipartFile mf = request.getImage();
 
             findByIdBlog.get().setTitle(request.getTitle());
             findByIdBlog.get().setSlug(request.getSlug());

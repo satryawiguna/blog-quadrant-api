@@ -18,7 +18,7 @@ public class BlogDataRequest {
 
     private String description;
 
-    private MultipartFile file;
+    private MultipartFile image;
 
     private CategoryEntity category;
 
@@ -48,12 +48,12 @@ public class BlogDataRequest {
         this.description = description;
     }
 
-    public MultipartFile getFile() {
-        return file;
+    public MultipartFile getImage() {
+        return image;
     }
 
-    public void setFile(MultipartFile file) {
-        this.file = file;
+    public void setImage(MultipartFile image) {
+        this.image = image;
     }
 
     public CategoryEntity getCategory() {

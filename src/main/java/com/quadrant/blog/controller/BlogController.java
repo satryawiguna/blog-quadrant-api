@@ -21,6 +21,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -89,7 +90,7 @@ public class BlogController {
     public ResponseEntity<BaseDataResponse<BlogDataResponse>> store(@RequestParam(value = "title") @NotEmpty(message = "Title could not be empty") String title,
                                                                     @RequestParam(value = "slug") @NotEmpty(message = "Slug could not be empty") String slug,
                                                                     @RequestParam(value = "description") String description,
-                                                                    @RequestParam(value = "file") MultipartFile file,
+                                                                    @RequestParam(value = "image") MultipartFile image,
                                                                     @RequestParam(value = "category_id") Long categoryId,
                                                                     @RequestParam(value = "user_id") Long userId) {
         BaseDataResponse<BlogDataResponse> response =  new BaseDataResponse<>();
@@ -104,12 +105,12 @@ public class BlogController {
                 .title(title)
                 .slug(slug)
                 .description(description)
-                .file(file)
+                .image(image)
                 .category(getCategoryResponse)
                 .user(getUserResponse)
                 .build();
 
-        MultipartFile mf = request.getFile();
+        MultipartFile mf = request.getImage();
         BlogEntity blog = modelMapper.map(request, BlogEntity.class);
 
         BaseDataResponse<BlogDataResponse> createBlogResponse = blogService.createBlog(blog, mf, response);
@@ -123,7 +124,7 @@ public class BlogController {
                                                       @RequestParam(value = "title") @NotEmpty(message = "Title could not be empty") String title,
                                                       @RequestParam(value = "slug") @NotEmpty(message = "Slug could not be empty") String slug,
                                                       @RequestParam(value = "description") String description,
-                                                      @RequestParam(value = "file") MultipartFile file,
+                                                      @RequestParam(value = "image") MultipartFile image,
                                                       @RequestParam(value = "category_id") Long categoryId,
                                                       @RequestParam(value = "user_id") Long userId) {
         BaseDataResponse<BlogDataResponse> response =  new BaseDataResponse<>();
@@ -138,7 +139,7 @@ public class BlogController {
                 .title(title)
                 .slug(slug)
                 .description(description)
-                .file(file)
+                .image(image)
                 .category(getCategoryResponse)
                 .user(getUserResponse)
                 .build();

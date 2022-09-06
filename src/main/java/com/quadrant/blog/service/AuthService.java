@@ -73,6 +73,7 @@ public class AuthService {
                     UserDetails userDetails = userDetailsService.loadUserByUsername(email);
 
                     Map<String, Object> generateTokenResponse = new HashMap<>();
+                    generateTokenResponse.put("id", user.get().getId());
                     generateTokenResponse.put("access_token", jwtTokenUtil.generateToken(userDetails));
 
                     RefreshTokenEntity createRefreshTokenResponse = refreshTokenService.createRefreshToken(user.get().getId());
