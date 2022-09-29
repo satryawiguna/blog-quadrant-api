@@ -23,9 +23,7 @@ import java.util.Map;
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
-
     private final UserDetailsService jwtUserDetailsService;
-
     private final JwtRequestFilter jwtRequestFilter;
 
     public SecurityConfig(UserDetailsService jwtUserDetailsService, JwtRequestFilter jwtRequestFilter) {
@@ -43,18 +41,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public AuthenticationManager authenticationManagerBean() throws Exception {
         return super.authenticationManagerBean();
     }
-
-    private static final String[] AUTH_WHITELIST = {
-            "/authenticate",
-            "/swagger-resources/**",
-            "/swagger-ui/**",
-            "/v3/api-docs",
-            "/webjars/**",
-
-            "/api/v1/auth/*",
-            "/upload/**",
-            "/api/v1/common/**"
-    };
 
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
@@ -82,4 +68,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
     }
+
+    private static final String[] AUTH_WHITELIST = {
+            "/authenticate",
+            "/swagger-resources/**",
+            "/swagger-ui/**",
+            "/v3/api-docs",
+            "/webjars/**",
+
+            "/api/v1/auth/*",
+            "/api/v1/blog/*/comments",
+            "/upload/**",
+            "/api/v1/common/**"
+    };
 }
